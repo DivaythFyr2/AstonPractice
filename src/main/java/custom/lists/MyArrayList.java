@@ -11,7 +11,7 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T> {
     /**
      * Массив для хранения элементов.
      */
-    private Object[] elements;
+    private T[] elements;
 
     /**
      * Количество элементов в массиве.
@@ -22,7 +22,20 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T> {
      * Создаем пустой динамический массив с начальной емкостью по умолчанию.
      */
     public MyArrayList() {
-        elements = new Object[DEFAULT_CAPACITY];
+        elements = (T[]) new Comparable[DEFAULT_CAPACITY];
+    }
+
+    /**
+     * Создает новый CustomArrayList с указанной начальной емкостью.
+     *
+     * @param capacity начальная емкость списка
+     * @throws IllegalArgumentException если capacity < 0
+     */
+    public MyArrayList(int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Начальный размер не может быть отрицательным: " + capacity);
+        }
+        elements = (T[]) new Comparable[capacity];
     }
 
     /**
@@ -92,7 +105,7 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T> {
      */
     @Override
     public void clear() {
-        elements = new Object[DEFAULT_CAPACITY];
+        elements =(T[]) new Comparable[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -126,11 +139,12 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T> {
     public void sort() {
         for (int i = 0; i < size - 1; i++) {
             for (int j = 0; j < size - i - 1; j++) {
-                T currentElement = (T) elements[j];
-                T nextElement = (T) elements[j + 1];
-                if (currentElement.compareTo(nextElement) < 0) {
-                    elements[j] = nextElement;
-                    elements[j + 1] = currentElement;
+                Comparable<T> currentElement = elements[j];
+                Comparable<T> nextElement = elements[j + 1];
+                if (currentElement.compareTo((T) nextElement) > 0) {
+                    T temp = (T) elements[j];
+                    elements[j] = elements[j + 1];
+                    elements[j + 1] = temp;
                 }
             }
         }

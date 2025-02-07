@@ -29,4 +29,6 @@ bin/
 .DS_Store
 .idea/
 AstonPractice.iml
+target/
+
 
